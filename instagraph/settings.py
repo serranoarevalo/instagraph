@@ -124,7 +124,7 @@ STATIC_URL = '/static/'
 
 
 GRAPHENE = {
-    'SCHEMA': 'instagraph.schema'
+    'SCHEMA': 'instagraph.schema.schema'
 }
 
 

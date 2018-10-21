@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'graphene_django'
+    'graphene_django',
+    "users.apps.UsersConfig",
 ]
 
 MIDDLEWARE = [
@@ -124,3 +125,6 @@ STATIC_URL = '/static/'
 GRAPHENE = {
     'SCHEMA': 'instagraph.schema'
 }
+
+
+AUTH_USER_MODEL = 'users.User'

@@ -3,6 +3,9 @@ from django.contrib.auth.models import AbstractUser
 
 
 class DateModel(models.Model):
+
+    """ Abstract Model to Timestamp All """
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -11,6 +14,8 @@ class DateModel(models.Model):
 
 
 class User(AbstractUser, DateModel):
+
+    """ Custom User Model """
 
     name = models.CharField(max_length=250)
     bio = models.TextField(null=True, blank=True)

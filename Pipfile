@@ -8,10 +8,13 @@ name = "pypi"
 [packages]
 
 django = "*"
+graphene-django = "*"
 
 
 [dev-packages]
 
+pylint = "*"
+"autopep8" = "*"
 
 
 [requires]

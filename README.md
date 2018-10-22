@@ -7,7 +7,7 @@ Instagram-like GraphQL API build with Django and Graphene
 - [x] Get All Users
 - [x] Get User
 - [x] Get All Photos
-- [ ] Get Photos
+- [x] Get Photo
 
 ## Mutations
 

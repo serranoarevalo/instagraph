@@ -20,9 +20,7 @@ class Query(object):
 
     def resolve_user(self, info, **kwargs):
         username = kwargs.get('username')
-
         if username is not None:
-
             try:
                 user = models.User.objects.get(username=username)
                 return UserResponse(ok=True, user=user)

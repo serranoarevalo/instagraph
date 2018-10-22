@@ -1,9 +1,10 @@
 import graphene
 
 import users.schema
+import images.schema
 
 
-class Query(users.schema.Query, graphene.ObjectType):
+class Query(users.schema.Query, images.schema.Query, graphene.ObjectType):
     pass
 
 

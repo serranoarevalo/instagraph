@@ -35,3 +35,4 @@ class Query(object):
 
 class Mutation(object):
     create_image = mutations.CreateImage.Field(required=True)
+    like_image = mutations.LikeImage.Field(required=True)

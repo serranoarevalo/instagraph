@@ -17,7 +17,6 @@ class User(AbstractUser, DateModel):
 
     """ Custom User Model """
 
-    name = models.CharField(max_length=250)
     bio = models.TextField(null=True, blank=True)
     website = models.URLField(null=True, blank=True)
 

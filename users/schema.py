@@ -1,23 +1,16 @@
 import graphene
 from graphene_django.types import DjangoObjectType
-from . import models
-
-
-class UserType(DjangoObjectType):
-
-    full_name = graphene.String()
-
-    class Meta:
-        model = models.User
-        exclude_fields = ('password',)
-
-    def resolve_full_name(self, info):
-        return f'{self.first_name} {self.last_name}'
+from . import models, mutations, types
 
 
 class Query(object):
 
-    all_users = graphene.List(UserType)
+    all_users = graphene.List(types.UserType)
 
     def resolve_all_users(self, info, **kwargs):
         return models.User.objects.all()
+
+
+class Mutation(object):
+
+    create_user = mutations.CreateUser.Field()

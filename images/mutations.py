@@ -45,25 +45,64 @@ class LikeImage(graphene.Mutation):
     def mutate(self, info, **kwargs):
         id = kwargs.get('imageId')
         user = info.context.user
-        if id is not None:
-
-            try:
-                image = models.Image.objects.get(id=id)
+        if user.is_authenticated:
+            if id is not None:
                 try:
-                    like = models.Like.objects.get(creator=user, image=image)
-                    like.delete()
-                except models.Like.DoesNotExist:
-                    like = models.Like.objects.create(
-                        creator=user, image=image)
-                    like.save()
-                ok = True
-                return LikeImage(ok=ok)
-
-            except models.Image.DoesNotExist:
-                ok = False
-                error = 'Image Not Found'
-                return LikeImage(ok=ok, error=error)
-
+                    image = models.Image.objects.get(id=id)
+                    try:
+                        like = models.Like.objects.get(
+                            creator=user, image=image)
+                        like.delete()
+                    except models.Like.DoesNotExist:
+                        like = models.Like.objects.create(
+                            creator=user, image=image)
+                        like.save()
+                    ok = True
+                    return LikeImage(ok=ok)
+                except models.Image.DoesNotExist:
+                    ok = False
+                    error = 'Image Not Found'
+                    return LikeImage(ok=ok, error=error)
+            ok = False
+            error = 'ID is mandatory'
+            return LikeImage(ok=ok, error=error)
         ok = False
-        error = 'ID is mandatory'
+        error = 'You need to log in'
         return LikeImage(ok=ok, error=error)
+
+
+class CreateComment(graphene.Mutation):
+
+    """ Create a Comment """
+
+    class Arguments:
+        message = graphene.String(required=True)
+        imageId = graphene.Int(required=True)
+
+    ok = graphene.Boolean(required=True)
+    comment = graphene.Field(types.CommentType)
+    error = graphene.String()
+
+    def mutate(self, info, **kwargs):
+        message = kwargs.get('message')
+        imageId = kwargs.get('imageId')
+        user = info.context.user
+        if user.is_authenticated:
+            if message is not None and imageId is not None:
+                try:
+                    image = models.Image.objects.get(id=imageId)
+                    comment = models.Comment.objects.create(
+                        message=message, image=image, creator=user)
+                    comment.save()
+                    ok = True
+                    return CreateComment(ok=ok, comment=comment)
+                except models.Image.DoesNotExist:
+                    ok = False
+                    error = 'Image not found'
+                    return CreateComment(ok=ok, error=error)
+            ok = False
+            error = 'Message and ImageID are mandatory'
+            return CreateComment(ok=ok, error=error)
+        ok = False
+        error = 'You need to log in'
+        return CreateComment(ok=ok, error=error)

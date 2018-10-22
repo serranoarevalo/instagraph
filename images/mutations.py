@@ -136,3 +136,72 @@ class DeleteImage(graphene.Mutation):
             ok = False
             error = "You need to log in"
             return DeleteImage(ok=ok, error=error)
+
+
+class DeleteComment(graphene.Mutation):
+
+    """ Delete Comment """
+
+    class Arguments:
+        commentId = graphene.Int(required=True)
+
+    ok = graphene.Boolean(required=True)
+    error = graphene.String()
+
+    def mutate(self, info, **kwargs):
+        user = info.context.user
+        commentId = kwargs.get('commentId')
+
+        if user.is_authenticated:
+            try:
+                comment = models.Comment.objects.get(
+                    id=commentId, creator=user)
+                comment.delete()
+                ok = True
+                return DeleteComment(ok=ok)
+            except models.Comment.DoesNotExist:
+                ok = False
+                error = 'Comment not found'
+                return DeleteComment(ok=ok, error=error)
+        else:
+            ok = False
+            error = 'Unauthorized'
+            return DeleteComment(ok=ok, error=error)
+
+
+class EditImage(graphene.Mutation):
+
+    """ Edit Image """
+
+    class Arguments:
+        imageId = graphene.Int(required=True)
+        location = graphene.String()
+        caption = graphene.String()
+
+    ok = graphene.Boolean(required=True)
+    error = graphene.String()
+
+    def mutate(self, info, **kwargs):
+        user = info.context.user
+        imageId = kwargs.get('imageId')
+        location = kwargs.get('location')
+        caption = kwargs.get('caption')
+
+        if user.is_authenticated:
+            try:
+                image = models.Image.objects.get(creator=user, id=imageId)
+                if location is not None:
+                    image.location = location
+                if caption is not None:
+                    image.caption = caption
+                image.save()
+                ok = True
+                return EditImage(ok=ok)
+            except models.Image.DoesNotExist:
+                ok = False
+                error = 'Image not found'
+                return EditImage(ok=ok, error=error)
+        else:
+            ok = False
+            error = 'Unauthorized'
+            return DeleteComment(ok=ok, error=error)

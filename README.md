@@ -17,13 +17,13 @@ Instagram-like GraphQL API build with Django and Graphene
 - [x] Create Comment
 - [x] Unlike Photo
 - [x] Delete Photo
-- [ ] Delete Comment
-- [ ] Edit Photo
+- [x] Delete Comment
+- [x] Edit Photo
 - [ ] Edit User
 - [ ] Log In
 - [ ] Logged In Profile
 
 ## Requirements
 
-- [ ] File Upload
+- [x] File Upload
 - [ ] JWT Authentication

@@ -8,7 +8,7 @@ class Query(users.schema.Query, images.schema.Query, graphene.ObjectType):
     pass
 
 
-class Mutation(users.schema.Mutation, graphene.ObjectType):
+class Mutation(users.schema.Mutation, images.schema.Mutation, graphene.ObjectType):
     pass
 
 

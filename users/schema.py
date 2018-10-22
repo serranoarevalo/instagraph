@@ -4,12 +4,17 @@ from . import models, mutations, types
 
 
 class UserResponse(graphene.ObjectType):
+
+    """ User Query Response """
+
     ok = graphene.Boolean(required=True)
     user = graphene.Field(types.UserType)
     error = graphene.String()
 
 
 class Query(object):
+
+    """ User Queries """
 
     users = graphene.List(types.UserType, required=True)
     user = graphene.Field(
@@ -23,11 +28,15 @@ class Query(object):
         if username is not None:
             try:
                 user = models.User.objects.get(username=username)
-                return UserResponse(ok=True, user=user)
+                ok = True
+                return UserResponse(ok=ok, user=user)
             except models.User.DoesNotExist:
-                return UserResponse(ok=False, error='User not found')
-
-        return UserResponse(ok=False, error='Username is mandatory')
+                ok = False
+                error = 'User Not Found'
+                return UserResponse(ok=ok, error=error)
+        ok = False
+        error = 'Username is mandatory'
+        return UserResponse(ok=ok, error=error)
 
 
 class Mutation(object):

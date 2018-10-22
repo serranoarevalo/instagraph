@@ -5,7 +5,7 @@ from . import types, models
 
 class CreateUser(graphene.Mutation):
 
-    """ Create a User """
+    """ Create an User """
 
     class Arguments:
         bio = graphene.String()

@@ -1,6 +1,6 @@
 import graphene
 from graphene_django.types import DjangoObjectType
-from . import models, types
+from . import models, types, mutations
 
 
 class ImageResponse(graphene.ObjectType):
@@ -22,7 +22,16 @@ class Query(object):
         if id is not None:
             try:
                 image = models.Image.objects.get(id=id)
-                return ImageResponse(ok=True, image=image)
+                ok = True
+                return ImageResponse(ok=ok, image=image)
             except models.Image.DoesNotExist:
-                return ImageResponse(ok=False, error='Image Not Found')
-        return ImageResponse(ok=False, error='ID is mandatory')
+                ok = False
+                error = 'Image Not Found'
+                return ImageResponse(ok=ok, error=error)
+        ok = False
+        error = 'ID is mandatory'
+        return ImageResponse(ok=ok, error=error)
+
+
+class Mutation(object):
+    create_image = mutations.CreateImage.Field(required=True)

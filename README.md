@@ -26,4 +26,4 @@ Instagram-like GraphQL API build with Django and Graphene
 ## Requirements
 
 - [x] File Upload
-- [ ] JWT Authentication
+- [x] JWT Authentication

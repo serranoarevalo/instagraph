@@ -106,3 +106,33 @@ class CreateComment(graphene.Mutation):
         ok = False
         error = 'You need to log in'
         return CreateComment(ok=ok, error=error)
+
+
+class DeleteImage(graphene.Mutation):
+
+    """ Delete Image """
+
+    class Arguments:
+        imageId = graphene.Int(required=True)
+
+    ok = graphene.Boolean(required=True)
+    error = graphene.String()
+
+    def mutate(self, info, **kwargs):
+        user = info.context.user
+        imageId = kwargs.get('imageId')
+
+        if user.is_authenticated:
+            try:
+                image = models.Image.objects.get(id=imageId, creator=user)
+                image.delete()
+                ok = True
+                return DeleteImage(ok=ok)
+            except models.Image.DoesNotExist:
+                ok = False
+                error = 'Image not found'
+                return DeleteImage(ok=ok, error=error)
+        else:
+            ok = False
+            error = "You need to log in"
+            return DeleteImage(ok=ok, error=error)

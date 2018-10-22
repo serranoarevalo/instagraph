@@ -15,8 +15,8 @@ Instagram-like GraphQL API build with Django and Graphene
 - [x] Create Photo
 - [x] Like Photo
 - [x] Create Comment
-- [ ] Delete Photo
-- [ ] Unlike Photo
+- [x] Unlike Photo
+- [x] Delete Photo
 - [ ] Delete Comment
 - [ ] Edit Photo
 - [ ] Edit User

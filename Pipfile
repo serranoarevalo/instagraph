@@ -10,6 +10,7 @@ name = "pypi"
 django = "*"
 graphene-django = "*"
 graphene-file-upload = "*"
+django-graphql-jwt = "*"
 
 
 [dev-packages]

@@ -1,5 +1,7 @@
 import graphene
 from graphene_django.types import DjangoObjectType
+import graphql_jwt
+from graphql_jwt.decorators import login_required
 from . import models, mutations, types
 
 
@@ -19,6 +21,7 @@ class Query(object):
     users = graphene.List(types.UserType, required=True)
     user = graphene.Field(
         UserResponse, username=graphene.String(required=True))
+    me = graphene.Field(types.UserType)
 
     def resolve_users(self, info, **kwargs):
         return models.User.objects.all()
@@ -38,6 +41,13 @@ class Query(object):
         error = 'Username is mandatory'
         return UserResponse(ok=ok, error=error)
 
+    @login_required
+    def resolve_me(self, info, **kwargs):
+        return info.context.user
+
 
 class Mutation(object):
     create_user = mutations.CreateUser.Field(required=True)
+    token_auth = graphql_jwt.ObtainJSONWebToken.Field()
+    verify_token = graphql_jwt.Verify.Field()
+    refresh_token = graphql_jwt.Refresh.Field()
